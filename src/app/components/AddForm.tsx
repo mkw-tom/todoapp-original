@@ -1,11 +1,11 @@
 
 import React, { useRef, useState } from 'react';
-import { propsAddForm } from '@/Type';
+import { propsTask } from '@/Type';
 import { db } from '../firebase/firebase';
 import { collection, doc, addDoc, setDoc } from 'firebase/firestore';
 
 
-const AddForm = ({todos, setTodos}: propsAddForm) => {
+const AddForm = ({todos, setTodos}: propsTask) => {
   const [text, setText] = useState<string>("");
   const ref = useRef<HTMLInputElement>(null!)
 

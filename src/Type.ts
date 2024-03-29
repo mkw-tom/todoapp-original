@@ -4,7 +4,7 @@ export type Task = {
   edit: boolean;
 }
 
-export type propsAddForm = {
+export type propsTask = {
   todos: Task[];
   setTodos: React.Dispatch<React.SetStateAction<Task[]>>;
 }

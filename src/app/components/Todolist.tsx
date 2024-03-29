@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react'
-import { Task, propsAddForm } from '@/Type'
+import { Task, propsTask } from '@/Type'
 import { Delete, Edit, EditOff } from '@mui/icons-material'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase/firebase'
 
 
 
-const Todolist = ({ todos, setTodos }: propsAddForm) => {
+const Todolist = ({ todos, setTodos }: propsTask) => {
   const [updateText, setUpdateText] = useState<string>("")
   const ref = useRef<HTMLInputElement>(null!)
 
@@ -24,13 +24,8 @@ const Todolist = ({ todos, setTodos }: propsAddForm) => {
       text: updateText,
       edit: false,
     })
-
-
-
-    console.log(todos)
   }
 
-  ////////リスト編集の複数選択をなくす
 
   const handleEdit = async (id: number, text: string) => {
     setUpdateText(text);
