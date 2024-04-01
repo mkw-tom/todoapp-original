@@ -2,19 +2,26 @@
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
 import { Task } from '@/Type';
-import { db } from "./firebase/firebase";
+import { db, auth, provider } from "./firebase/firebase";
 import { collection, doc, getDocs, } from 'firebase/firestore';
 import { useEffect, useState } from "react";
+import { signInWithRedirect } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth"
+import { Button } from "@mui/material";
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
+  const [user] = useAuthState(auth);
+  const curUser: any = auth?.currentUser;
+  const photoURL: any = curUser?.photoURL;
+  const userName: string = curUser?.displayName;
+  const uid: any = curUser?.uid;
 
-  
   const getTodosData = async () => {
-    const datas = await getDocs(collection(db, "todo"));
+    const datas = await getDocs(collection(db, `todos`));
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
-      const todo: Task = { 
+      const todo: Task = {
         id: data.data().id,
         text: data.data().text,
         edit: false,
@@ -29,14 +36,47 @@ export default function Home() {
     getTodosData();
   }, [])
 
- 
+  const handleSignUp = () => {
+    signInWithRedirect(auth, provider);
+    console.log(curUser);
+  }
+
+  const handleSignOut = () => {
+    auth.signOut();
+  }
+  
+
+
   return (
     <>
-      <h1 className="text-3xl text-center my-8 font-bold tracking-wide">TodoApp with Next.js/firebase</h1>
-      <main className="h-auto w-2/5 min-w-96 mt-5 mx-auto bg-gray-300 px-4 py-3 rounded-md text-center shadow-2xl">
+      <header className=" w-full h-28 bg-purple-600 flex items-center shadow-lg">
+        <h1 className="text-2xl text-start font-bold tracking-wide text-white flex-1 border-r-2 flex-wrap ml-16">
+          <span className="text-4xl display: inline-block mx-8">TodoApp</span>
+          <span className="text-xl display: inline-block pr-8">with Next.js/firebase</span>
+        </h1>
+        {user ? (
+          <div className="group text-center w-1/5 text-lg">
+            <img src={photoURL} alt="image" className="inline-block w-12 h-12 rounded-full z-0 border-2 border-white" />
+            <div className="flex-col items-center justify-center hidden group-hover:block z-10 bg-purple-100 w-80 h-72 absolute top-5 right-5 duration-700 rounded-md shadow-lg border-2 border-purple-600">
+              <img src={photoURL} alt="" className="inline-block w-16 h-16 rounded-full mt-10" />
+              <p className="mt-3">{userName}</p>
+              <p className="my-6">現在のタスク数：{todos.length}</p>
+              <p onClick={handleSignOut}><Button >ログアウト</Button></p>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="text-center w-1/5 text-lg text-white font-bold hover:text-2xl duration-300"
+            onClick={handleSignUp}
+          >
+            ログイン
+          </div>
+        )}
+      </header>
+      <main className="h-auto w-2/5 min-w-96 mt-5 mx-auto bg-purple-400 px-4 py-3 rounded-md text-center shadow-2xl">
         <div className="flex-col w-11/12 h-auto mx-auto">
-          <AddForm todos={todos} setTodos={setTodos}/>
-          <Todolist todos={todos} setTodos={setTodos}/>
+          <AddForm uid={uid} todos={todos} setTodos={setTodos} />
+          <Todolist uid={uid} todos={todos} setTodos={setTodos} />
         </div>
       </main>
     </>

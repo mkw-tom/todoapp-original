@@ -5,6 +5,7 @@ export type Task = {
 }
 
 export type propsTask = {
+  uid: string | number;
   todos: Task[];
   setTodos: React.Dispatch<React.SetStateAction<Task[]>>;
 }
