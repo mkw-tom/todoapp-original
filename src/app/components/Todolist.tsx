@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Task, propsTask } from '@/Type'
 import { Delete, Edit, EditOff } from '@mui/icons-material'
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase/firebase'
 
 
@@ -10,8 +10,8 @@ const Todolist = ({uid, todos, setTodos }: propsTask) => {
   const [updateText, setUpdateText] = useState<string>("");
   const ref = useRef<HTMLInputElement>(null!)
 
-  const handleSave = async (id: number, text: string) => {
-    const newTodos = todos.map((todo) => {
+  const handleSave = async (id: number | string , text: string) => {
+    const newTodos  = todos.map((todo) => {
       if (todo.id === id) {
         todo.edit = false;
         todo.text = updateText;
@@ -28,7 +28,7 @@ const Todolist = ({uid, todos, setTodos }: propsTask) => {
   }
 
 
-  const handleEdit = async (id: number, text: string) => {
+  const handleEdit = async (id: number | string , text: string) => {
     setUpdateText(text);
     const newTodos = todos.map((todo) => {
       if (todo.id === id) {
@@ -44,10 +44,10 @@ const Todolist = ({uid, todos, setTodos }: propsTask) => {
     });
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number| string ) => {
     const newTodos = todos.filter((todo) => todo.id !== id);
     setTodos(newTodos);
-    await deleteDoc(doc(db, "users", `${uid}`, 'todos', `${id}`));
+    await deleteDoc(doc(db, 'users', `${uid}`, 'todos', `${id}`));
   }
 
   return (

@@ -3,8 +3,8 @@ import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
 import { Task } from '@/Type';
 import { db, auth, provider } from "./firebase/firebase";
-import { collection, doc, getDocs, setDoc, } from 'firebase/firestore';
-import { useCallback, useEffect, useState } from "react";
+import { collection, doc, getDocs, setDoc, updateDoc, } from 'firebase/firestore';
+import { useEffect, useState } from "react";
 import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth"
 import { Button } from "@mui/material";
@@ -17,15 +17,15 @@ export default function Home() {
   const userName: string = curUser?.displayName;
   const uid: any = curUser?.uid;
 
-  const setUserData = async () => {
-    const userData = await setDoc(doc(db, "users", `${uid}`), {
-      userName: userName,
-      photoURL: photoURL,
-    });
-  }
+  // const setUserData = async () => {
+  //   await updateDoc(doc(db, "users", `${uid}`), {
+  //     userName: userName,
+  //     photoURL: photoURL,
+  //   });
+  // }
 
   const getTodosData = async () => {
-    const datas = await getDocs(collection(db, `users`, `${uid}`, "todos"));
+    const datas = await getDocs(collection(db, `users`, `${uid}`, 'todos'));
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
       const todo: Task = {
@@ -41,20 +41,19 @@ export default function Home() {
 
   useEffect(() => {
     getTodosData();
-    console.log("成功")
-  }, [user])
+  }, [])
 
   const handleSignUp = () => {
     signInWithRedirect(auth, provider)
       .then((result) => {
         const credential: any = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-        console.log(`ログインに成功しました${token}`);
 
-        setUserData();
       }).catch((error) => {
         window.confirm("ログインに失敗しました。");
-      })
+      });
+
+      window.alert("ログインに成功しました")
   }
 
   const handleSignOut = () => {

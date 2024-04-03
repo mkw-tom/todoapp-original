@@ -1,8 +1,9 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useId, useRef, useState } from 'react';
 import { Task, propsTask } from '@/Type';
 import { db } from '../firebase/firebase';
 import { collection, doc, addDoc, setDoc } from 'firebase/firestore';
+import {v4 as uuidv4} from "uuid"
 
 
 const AddForm = ({uid, todos, setTodos}: propsTask) => {
@@ -12,7 +13,7 @@ const AddForm = ({uid, todos, setTodos}: propsTask) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newTodo: Task = {
-      id: todos.length,
+      id: `${todos.length}`,
       text: text,
       edit: false,
     }
