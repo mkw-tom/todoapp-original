@@ -17,12 +17,12 @@ export default function Home() {
   const userName: string = curUser?.displayName;
   const uid: any = curUser?.uid;
 
-  // const setUserData = async () => {
-  //   await updateDoc(doc(db, "users", `${uid}`), {
-  //     userName: userName,
-  //     photoURL: photoURL,
-  //   });
-  // }
+  const setUserData = async () => {
+    await updateDoc(doc(db, "users", `${uid}`), {
+      userName: userName,
+      photoURL: photoURL,
+    });
+  }
 
   const getTodosData = async () => {
     const datas = await getDocs(collection(db, `users`, `${uid}`, 'todos'));
@@ -41,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     getTodosData();
-  }, [])
+  }, [user]);
 
   const handleSignUp = () => {
     signInWithRedirect(auth, provider)
