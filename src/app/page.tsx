@@ -41,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     getTodosData();
-  }, [])
+  }, [user])
 
   const handleSignUp = () => {
     signInWithRedirect(auth, provider)
@@ -52,8 +52,6 @@ export default function Home() {
       }).catch((error) => {
         window.confirm("ログインに失敗しました。");
       });
-
-      window.alert("ログインに成功しました")
   }
 
   const handleSignOut = () => {
