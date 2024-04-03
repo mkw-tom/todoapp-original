@@ -41,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     getTodosData();
-  }, [user])
+  }, [])
 
   const handleSignUp = () => {
     signInWithRedirect(auth, provider)
