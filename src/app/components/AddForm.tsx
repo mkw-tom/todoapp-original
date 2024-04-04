@@ -12,15 +12,17 @@ const AddForm = ({uid, todos, setTodos}: propsTask) => {
 
   const handleAdd = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    const docID: number | string = uuidv4();
+
     const newTodo: Task = {
-      id: `${todos.length}`,
+      id: `${docID}`,
       text: text,
       edit: false,
     }
     setTodos([...todos, newTodo])
 
     ///
-    await setDoc(doc(db, `users`, `${uid}`, "todos", `${todos.length}`), {
+    await setDoc(doc(db, `users`, `${uid}`, "todos", `${docID}`), {
       ...newTodo,
     });
 
