@@ -1,14 +1,15 @@
 "use client"
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
-import { Task　} from '@/Type';
+import { Task } from '@/Type';
 import { db, auth, GoogleProvider, GitHubProvider } from "./firebase/firebase";
 import { collection, doc, getDocs, setDoc, updateDoc, } from 'firebase/firestore';
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { GithubAuthProvider, GoogleAuthProvider, OAuthCredential, signInWithRedirect } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";
 import { GitHub, Google } from "@mui/icons-material";
+import Loading from "./components/Loading";
 
 
 export default function Home() {
@@ -107,8 +108,8 @@ export default function Home() {
       {user ? (
         <main className="h-auto w-2/5 min-w-96 mt-5 mx-auto bg-purple-500 px-4 py-3 rounded-md text-center shadow-2xl">
           <div className="flex-col w-11/12 h-auto mx-auto">
-            <AddForm uid={uid} todos={todos} setTodos={setTodos} />
-            <Todolist uid={uid} todos={todos} setTodos={setTodos} />
+              <AddForm uid={uid} todos={todos} setTodos={setTodos} />
+              <Todolist uid={uid} todos={todos} setTodos={setTodos} />
           </div>
         </main>
       ) : (
