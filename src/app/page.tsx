@@ -1,7 +1,7 @@
 "use client"
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
-import { Task, userInfomation } from '@/Type';
+import { Task　} from '@/Type';
 import { db, auth, GoogleProvider, GitHubProvider } from "./firebase/firebase";
 import { collection, doc, getDocs, setDoc, updateDoc, } from 'firebase/firestore';
 import { useEffect, useState } from "react";
@@ -13,7 +13,6 @@ import { GitHub, Google } from "@mui/icons-material";
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
-  const [userInfo, setUserInfo] = useState<userInfomation>()
   const [user] = useAuthState(auth);
   const curUser: any = auth.currentUser;
   let photoURL: any = curUser?.photoURL;
