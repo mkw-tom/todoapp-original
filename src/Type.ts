@@ -9,3 +9,8 @@ export type propsTask = {
   todos: Task[];
   setTodos: React.Dispatch<React.SetStateAction<Task[]>>;
 }
+
+// export type emailInfomation = {
+//   address: string | number;
+//   password: string | number
+// }

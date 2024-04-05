@@ -2,18 +2,23 @@
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
 import { Task } from '@/Type';
-import { db, auth, GoogleProvider, GitHubProvider } from "./firebase/firebase";
+import { db, auth } from "./firebase/firebase";
 import { collection, doc, getDocs, setDoc, updateDoc, } from 'firebase/firestore';
 import { Suspense, useEffect, useState } from "react";
-import { GithubAuthProvider, GoogleAuthProvider, OAuthCredential, signInWithRedirect } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";
-import { GitHub, Google } from "@mui/icons-material";
-import Loading from "./components/Loading";
+import UserLoginForm from "./components/UserLoginForm";
+
+
+
+
+
 
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
+
+  // const [uid, setuid] = useState<string | number>()
   const [user] = useAuthState(auth);
   const curUser: any = auth.currentUser;
   let photoURL: any = curUser?.photoURL;
@@ -48,33 +53,10 @@ export default function Home() {
   }
 
 
-  const GoogleSignUp = () => {
-    signInWithRedirect(auth, GoogleProvider)
-      .then((result) => {
-        const credential: OAuthCredential | null = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-      }).catch((error) => {
-        window.confirm("ログインに失敗しました。");
-      });
-  }
-
-  const GitHubSignUp = () => {
-    signInWithRedirect(auth, GitHubProvider)
-      .then((result) => {
-        const credential: OAuthCredential | null = GithubAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-
-      }).catch((error) => {
-        window.confirm("ログインに失敗しました。")
-      });
-  }
-
-
 
   const handleSignOut = () => {
     auth.signOut();
     setTodos([]);
-
   }
 
 
@@ -108,28 +90,12 @@ export default function Home() {
       {user ? (
         <main className="h-auto w-2/5 min-w-96 mt-5 mx-auto bg-purple-500 px-4 py-3 rounded-md text-center shadow-2xl">
           <div className="flex-col w-11/12 h-auto mx-auto">
-              <AddForm uid={uid} todos={todos} setTodos={setTodos} />
-              <Todolist uid={uid} todos={todos} setTodos={setTodos} />
+            <AddForm uid={uid} todos={todos} setTodos={setTodos} />
+            <Todolist uid={uid} todos={todos} setTodos={setTodos} />
           </div>
         </main>
       ) : (
-        <main className="h-auto w-2/5 min-w-96 mt-5 mx-auto bg-purple-500 px-4 py-3 rounded-md text-center shadow-2xl">
-          <div className="flex-col w-11/12 h-auto mx-auto">
-            <h2 className="text-3xl font-bold text-white border-b-2 mt-5 mb-8 pb-2">Welcom to my TodoApp</h2>
-            <button
-              onClick={GoogleSignUp}
-              className="block bg-blue-600 text-white w-full h-12 rounded-md mb-3 hover:opacity-60"
-            >
-              Login with Google<span className="ml-2"><Google></Google></span>
-            </button>
-            <button
-              onClick={GitHubSignUp}
-              className="block bg-black text-white w-full h-12 rounded-md mb-3 hover:opacity-70"
-            >
-              Login with GitHub<span className="ml-2"><GitHub></GitHub></span>
-            </button>
-          </div>
-        </main>
+        <UserLoginForm />
       )}
 
     </>
