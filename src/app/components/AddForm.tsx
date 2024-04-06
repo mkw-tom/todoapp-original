@@ -2,7 +2,7 @@
 import React, { useId, useRef, useState } from 'react';
 import { Task, propsTask } from '@/Type';
 import { db } from '../firebase/firebase';
-import { collection, doc, addDoc, setDoc } from 'firebase/firestore';
+import { doc, addDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from "uuid"
 
 
@@ -34,7 +34,6 @@ const AddForm = ({ uid, todos, setTodos }: propsTask) => {
     });
 
     ref.current.value = ""
-
   }
 
   return (

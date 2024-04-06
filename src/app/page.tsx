@@ -1,30 +1,29 @@
-"use client"
+"use client";
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
-import { Task } from '@/Type';
+import { Task } from "@/Type";
 import { db, auth } from "./firebase/firebase";
-import { collection, doc, getDocs, setDoc, updateDoc, } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { Suspense, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";
 import UserLoginForm from "./components/UserLoginForm";
-
-
-
-
-
-
+import AppStart from "./components/AppStart";
+import { log } from "console";
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
 
-  // const [uid, setuid] = useState<string | number>()
   const [user] = useAuthState(auth);
   const curUser: any = auth.currentUser;
-  let photoURL: any = curUser?.photoURL;
-  let userName: string | number = curUser?.displayName;
-  let uid: any = curUser?.uid;
-
+  const photoURL: any = curUser?.photoURL;
+  const userName: string | number = curUser?.displayName;
+  const uid: any = curUser?.uid;
 
   useEffect(() => {
     getTodosData();
@@ -38,52 +37,61 @@ export default function Home() {
   // }
 
   const getTodosData = async () => {
-    const datas = await getDocs(collection(db, `users`, `${uid}`, 'todos'));
+    const datas = await getDocs(collection(db, `users`, `${uid}`, "todos"));
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
       const todo: Task = {
         id: data.data().id,
         text: data.data().text,
         edit: false,
-      }
+      };
       todoDataList.push(todo);
     });
     // console.log(todoDataList);
     setTodos(todoDataList);
-  }
-
-
+  };
 
   const handleSignOut = () => {
     auth.signOut();
     setTodos([]);
-  }
-
-
-
+  };
   return (
     <>
       {user ? (
         <header className=" w-full h-28 bg-purple-700 flex items-center shadow-lg">
           <h1 className="text-2xl text-start font-bold tracking-wide text-white flex-1 border-r-2 flex-wrap ml-16">
             <span className="text-4xl display: inline-block mx-8">TodoApp</span>
-            <span className="text-xl display: inline-block pr-8">with Next.js/firebase</span>
+            <span className="text-xl display: inline-block pr-8">
+              with Next.js/firebase
+            </span>
           </h1>
           <div className="group text-center w-1/5 text-lg">
-            <img src={photoURL} alt="image" className="inline-block w-12 h-12 rounded-full z-0 border-2 border-white" />
+            <img
+              src={photoURL}
+              alt="image"
+              className="inline-block w-12 h-12 rounded-full z-0 border-2 border-white"
+            />
             <div className="flex-col items-center justify-center hidden group-hover:block z-10 bg-purple-100 w-80 h-72 absolute top-5 right-5 duration-700 rounded-md shadow-lg border-2 border-purple-600">
-              <img src={photoURL} alt="" className="inline-block w-16 h-16 rounded-full mt-10" />
+              <img
+                src={photoURL}
+                alt=""
+                className="inline-block w-16 h-16 rounded-full mt-10"
+              />
               <p className="mt-3">{userName}</p>
               <p className="my-6">現在のタスク数：{todos.length}</p>
-              <p onClick={handleSignOut}><Button >ログアウト</Button></p>
+              <p onClick={handleSignOut}>
+                <Button>ログアウト</Button>
+              </p>
             </div>
           </div>
         </header>
       ) : (
-        <header className=" w-full h-28 bg-purple-700 flex items-center justify-center shadow-lg">
+        <header className=" w-full h-28 bg-purple-700 flex items-center justify-center shadow-lg ">
           <h1 className="text-2xl text-start font-bold tracking-wide text-white flex-wrap justify-center mx-auto">
             <span className="text-4xl display: inline-block mx-8">TodoApp</span>
-            <span className="text-xl display: inline-block pr-8">with Next.js/firebase</span>
+            <span className="text-xl display: inline-block pr-8">
+              with Next.js/firebase
+            </span>
           </h1>
         </header>
       )}
@@ -95,9 +103,8 @@ export default function Home() {
           </div>
         </main>
       ) : (
-        <UserLoginForm />
+        <AppStart />
       )}
-
     </>
-  )
+  );
 }
