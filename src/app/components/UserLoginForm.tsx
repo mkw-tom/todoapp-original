@@ -2,14 +2,18 @@ import React, { useState } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
 import { Button } from '@mui/material'
+import Link from 'next/link'
+import { start } from '@/Type'
+import { Close } from '@mui/icons-material'
 
 
-const UserLoginForm = () => {
+const UserLoginForm = ({setStart} : start) => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   return (
     <main className="h-auto w-2/5 min-w-96 mt-5 mx-auto bg-purple-500 px-4 py-3 rounded-md text-center shadow-2xl">
+      <Close onClick={() => setStart(false)} className='block ml-auto text-white relative top-2 right-2'></Close>
       {isLogin === false ? (
-        <div className='text-lg text-white my-10 mx-auto cursor-pointer'>
+        <div className='text-lg text-white my-10 mx-auto cursor-pointer w-1/2'>
           <span className='mr-4 border-b-2 hover:opacity-60 duration-200' onClick={() => setIsLogin(false)}>
             新規登録
           </span>

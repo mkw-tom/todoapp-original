@@ -12,9 +12,9 @@ import {
 import { Suspense, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";
-import UserLoginForm from "./components/UserLoginForm";
+import HomeIcon from '@mui/icons-material/Home';
 import AppStart from "./components/AppStart";
-import { log } from "console";
+import Link from "next/link";
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
@@ -86,13 +86,16 @@ export default function Home() {
           </div>
         </header>
       ) : (
-        <header className=" w-full h-28 bg-purple-700 flex items-center justify-center shadow-lg ">
-          <h1 className="text-2xl text-start font-bold tracking-wide text-white flex-wrap justify-center mx-auto">
+        <header className=" w-full h-28 bg-purple-700 flex items-center justify-center shadow-lg">
+          <h1 className="text-2xl text-center font-bold tracking-wide text-white flex-wrap justify-center mx-auto flex-1 border-r-2">
             <span className="text-4xl display: inline-block mx-8">TodoApp</span>
             <span className="text-xl display: inline-block pr-8">
               with Next.js/firebase
             </span>
           </h1>
+          <Link href="./" className="text-white flex-col mx-5 hover:opacity-70">
+            <HomeIcon className="text-4xl"></HomeIcon>
+          </Link>
         </header>
       )}
       {user ? (

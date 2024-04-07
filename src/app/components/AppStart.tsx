@@ -3,13 +3,13 @@ import UserLoginForm from "./UserLoginForm";
 import { Fade } from "@mui/material";
 
 const AppStart = () => {
-  const [start, setStart] = useState<Boolean>(false);
+  const [start, setStart] = useState<boolean>(false);
 
   return (
     <>
       { start === false ? (
         <main className="h-auto w-auto flex-col justify-center">
-          <h2 className="text-purple-800 font-bold text-5xl block w-3/5 h-auto mx-auto mt-48 mb-48 text-center animate-bounce">
+          <h2 className="text-purple-800 font-bold text-6xl block w-3/5 h-auto mx-auto mt-48 mb-24 text-center animate-bounce">
             Welcom to TodoApp
           </h2>
           <button
@@ -18,12 +18,9 @@ const AppStart = () => {
           >
             create my TodoList
           </button>
-          <p className="block mx-auto text-center mt-12 text-lg">
-            ※ios非対応のため、iphoneまたはipadではご利用いただけません。
-          </p>
         </main>
       ) : (
-        <UserLoginForm />
+        <UserLoginForm setStart={setStart} />
       )}
     </>
   );

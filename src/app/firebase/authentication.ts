@@ -25,7 +25,7 @@ export const GoogleSignUp = async () => {
 };
 
 export const GitHubSignUp = async () => {
-  await signInWithRedirect(auth, GitHubProvider)
+  await signInWithPopup(auth, GitHubProvider)
     .then((result) => {
       const credential: OAuthCredential | null =
         GithubAuthProvider.credentialFromResult(result);
