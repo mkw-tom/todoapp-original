@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { EmailSignUp, GitHubSignUp, GoogleSignUp } from '../firebase/authentication';
+import { EmailSignUp, GitHubSignUp, GoogleSignUp, createUser } from '../firebase/authentication';
 import { Email, GitHub, Google } from '@mui/icons-material';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button } from '@mui/material';
@@ -7,8 +7,8 @@ import { auth, db } from '../firebase/firebase';
 import { addDoc, collection, doc } from 'firebase/firestore';
 
 const SignUp = () => {
-  const [email, setEmail] = useState<any>();
-  const [password, setPassword] = useState<any>();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   // const createUser = async () => {
     
@@ -33,7 +33,7 @@ const SignUp = () => {
       <form className="w-full flex-col justify-center">
         <input type="text" placeholder=" email" className="inline-block w-4/5 mb-3" onChange={(e) => setEmail(e.target.value)} />
         <input type="text" placeholder=" password" className="inline-block w-4/5" onChange={(e) => setPassword(e.target.value)} />
-        <a onClick={() => EmailSignUp(email, password)} className='block'><Button>login</Button></a>
+        <a onClick={() => createUser(email, password)} className='block'><Button>login</Button></a>
       </form>
     </div>
   )
