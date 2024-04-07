@@ -9,8 +9,11 @@ const AppStart = () => {
     <>
       { start === false ? (
         <main className="h-auto w-auto flex-col justify-center">
-          <h2 className="text-purple-800 font-bold text-6xl block w-3/5 h-auto mx-auto mt-48 mb-24 text-center animate-bounce">
-            Welcom to TodoApp
+          <h2 className="text-purple-800 font-bold text-6xl flex-wrap w-3/5 h-auto mx-auto mt-48 mb-24 text-center animate-bounce">
+            <span className="inline-block mx-3 my-2">Welcom</span> 
+            <span className="inline-block mx-3 my-2">to</span>
+            <span className="inline-block mx-3 my-2">TodoApp</span>
+  
           </h2>
           <button
             className="block mx-auto text-white text-xl bg-orange-700 px-8 py-5 rounded-full shadow-md shadow-orange-950 active:shadow-none active:translate-y-1 "

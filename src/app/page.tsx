@@ -61,7 +61,7 @@ export default function Home() {
         <header className=" w-full h-28 bg-purple-700 flex items-center shadow-lg">
           <h1 className="text-2xl text-start font-bold tracking-wide text-white flex-1 border-r-2 flex-wrap ml-16">
             <span className="text-4xl display: inline-block mx-8">TodoApp</span>
-            <span className="text-xl display: inline-block pr-8">
+            <span className="text-xl display: inline-block">
               with Next.js/firebase
             </span>
           </h1>
@@ -93,9 +93,9 @@ export default function Home() {
               with Next.js/firebase
             </span>
           </h1>
-          <Link href="./" className="text-white flex-col mx-5 hover:opacity-70">
+          {/* <Link href="./" className="text-white flex-col mx-5 hover:opacity-70">
             <HomeIcon className="text-4xl"></HomeIcon>
-          </Link>
+          </Link> */}
         </header>
       )}
       {user ? (
