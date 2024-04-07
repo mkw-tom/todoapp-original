@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signInWithRedirect,
 } from "firebase/auth";
 import { GitHubProvider, GoogleProvider, auth, db } from "./firebase";
@@ -12,7 +13,7 @@ import { getDoc } from "firebase/firestore";
 import { getExistingUser } from "./firestore";
 
 export const GoogleSignUp = async () => {
-  await signInWithRedirect(auth, GoogleProvider)
+  await signInWithPopup(auth, GoogleProvider)
     .then((result) => {
       const credential: OAuthCredential | null =
         GoogleAuthProvider.credentialFromResult(result);
