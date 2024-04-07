@@ -23,7 +23,7 @@ const Login = () => {
       </button>
       <button
         onClick={GitHubSignUp}
-        className="block bg-black text-white w-full h-12 rounded-md mb-3 hover:opacity-70"
+        className="block bg-black text-white w-full h-12 rounded-md mb-5 hover:opacity-70"
       >
         Login with GitHub<span className="ml-2"><GitHub></GitHub></span>
       </button>

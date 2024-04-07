@@ -59,7 +59,7 @@ export default function Home() {
     <>
       {user ? (
         <header className=" w-full h-28 bg-purple-700 flex items-center shadow-lg">
-          <h1 className="text-2xl text-start font-bold tracking-wide text-white flex-1 border-r-2 flex-wrap ml-16">
+          <h1 className="text-2xl text-center font-bold tracking-wide text-white flex-1 border-r-2 flex-wrap">
             <span className="text-4xl display: inline-block mx-8">TodoApp</span>
             <span className="text-xl display: inline-block">
               with Next.js/firebase
@@ -87,7 +87,7 @@ export default function Home() {
         </header>
       ) : (
         <header className=" w-full h-28 bg-purple-700 flex items-center justify-center shadow-lg">
-          <h1 className="text-2xl text-center font-bold tracking-wide text-white flex-wrap justify-center mx-auto flex-1 border-r-2">
+          <h1 className="text-2xl text-center font-bold tracking-wide text-white flex-wrap justify-center mx-auto ">
             <span className="text-4xl display: inline-block mx-8">TodoApp</span>
             <span className="text-xl display: inline-block pr-8">
               with Next.js/firebase

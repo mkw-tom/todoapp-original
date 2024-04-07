@@ -3,7 +3,6 @@ import {
   GoogleAuthProvider,
   OAuthCredential,
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
@@ -40,30 +39,11 @@ export const EmailSignUp = async (email: string, password: string) => {
   await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      return user;
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      window.alert(`${errorMessage}`);
+      window.alert(`${errorCode}:${errorMessage}`);
     });
-};
-
-export const createUser = async (email: string, password: string) => {
-  await createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      window.alert(`${errorMessage}`);
-    });
-  // ,then
-  //   await createUserWithEmailAndPassword(auth, email, password);
-  // } catch {
-  //   // const errorCode = error.code;
-  //   // const errorMessage = error.message;
-  //   window.alert("error");
-  // }
 };
