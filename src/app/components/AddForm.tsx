@@ -12,13 +12,20 @@ const AddForm = ({ uid, todos, setTodos }: propsTask) => {
 
   const handleAdd = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+
+    //文字列がない場合の早期リターン
+    if(text === "") {
+      return
+    }
     
+    //文字列が既に存在した場合の早期リターン
     const sameText: Task | undefined = todos.find((todo) => todo.text === text);
     if(sameText !== undefined) {
       ref.current.value = "";
       setText("");
       return window.alert("このタスクは既に存在しています。")
     }
+    
     const docID: number | string = uuidv4();
 
     const newTodo: Task = {
