@@ -69,7 +69,6 @@ export const EmailSignUp = async (email: string, password: string) => {
   await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      return user;
     })
     .catch((error) => {
       const errorCode = error.code;
