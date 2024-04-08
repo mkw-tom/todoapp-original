@@ -54,9 +54,12 @@ const Login = () => {
           className="inline-block w-4/5"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <a onClick={() => EmailSignUp(email, password)} className="block">
-          <Button>login</Button>
-        </a>
+        <button
+          className="block mx-auto text-yellow-200 border-2 border-yellow-200 rounded-full mt-5 px-3 py-1 hover:bg-yellow-200 hover:text-purple-500"
+          onClick={() => EmailSignUp(email, password)}
+        >
+          login
+        </button>
       </form>
     </div>
   );

@@ -5,38 +5,50 @@ import { Task } from "@/Type";
 import { db, auth } from "./firebase/firebase";
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import AppStart from "./components/AppStart";
-import Link from "next/link";
+
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
-
   const [user] = useAuthState(auth);
-  const curUser: any = auth.currentUser;
-  const photoURL: any = curUser?.photoURL;
-  const userName: string | number = curUser?.displayName;
-  const uid: any = curUser?.uid;
+  const displayName: string | null | undefined = user?.displayName;
+  const photoURL: any = user?.photoURL;
+  const uid: string | undefined = user?.uid
+  
+
+
 
   useEffect(() => {
+    setUserData();
     getTodosData();
   }, [user]);
 
-  // const setUserData = async () => {
-  //   await updateDoc(doc(db, "users", `${uid}`), {
-  //     userName: userName,
-  //     photoURL: photoURL,
-  //   });
-  // }
+
+  const setUserData = async () => {
+    if(user === null) {
+      return
+    }
+
+    await setDoc(doc(db, "users", `${user?.uid}`), {
+      displayName: user?.displayName,
+    });
+  }
 
   const getTodosData = async () => {
+    if(user === null) {
+      return
+    }
+
     const datas = await getDocs(collection(db, `users`, `${uid}`, "todos"));
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
@@ -77,7 +89,7 @@ export default function Home() {
                 alt=""
                 className="inline-block w-16 h-16 rounded-full mt-10"
               />
-              <p className="mt-3">{userName}</p>
+              <p className="mt-3">{displayName}</p>
               <p className="my-6">現在のタスク数：{todos.length}</p>
               <p onClick={handleSignOut}>
                 <Button>ログアウト</Button>

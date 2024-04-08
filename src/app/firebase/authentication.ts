@@ -9,9 +9,6 @@ import {
   signInWithRedirect,
 } from "firebase/auth";
 import { GitHubProvider, GoogleProvider, auth, db } from "./firebase";
-import { getDoc } from "firebase/firestore";
-import { getExistingUser } from "./firestore";
-
 
 //ーーーーーgoogleログインーーーーー
 export const GoogleSignUp = async () => {
