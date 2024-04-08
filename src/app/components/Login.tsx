@@ -43,13 +43,13 @@ const Login = () => {
       </p>
       <form className="w-full flex-col justify-center">
         <input
-          type="text"
+          type="email"
           placeholder=" email"
           className="inline-block w-4/5 mb-3"
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder=" password"
           className="inline-block w-4/5"
           onChange={(e) => setPassword(e.target.value)}
