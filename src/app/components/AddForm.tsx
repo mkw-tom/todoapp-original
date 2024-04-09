@@ -45,7 +45,7 @@ const AddForm = ({ uid, todos, setTodos }: propsTask) => {
 
   return (
     <form className='w-full my-4' onSubmit={(e) => handleAdd(e)}>
-      <input type="text" className='rounded-l-md w-10/12' onChange={(e) => setText(e.target.value)} ref={ref} />
+      <input type="text" className='rounded-l-md w-10/12 bg-purple-100' onChange={(e) => setText(e.target.value)} ref={ref} />
       <button className='bg-purple-800 text-white mb-2 rounded-r-md px-2' onClick={(e) => handleAdd(e)}>+</button>
       <hr />
     </form>

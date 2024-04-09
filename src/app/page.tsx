@@ -21,9 +21,11 @@ import AppStart from "./components/AppStart";
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
   const [user] = useAuthState(auth);
-  const displayName: string | null | undefined = user?.displayName;
-  const photoURL: any = user?.photoURL;
-  const uid: string | undefined = user?.uid
+  
+
+  const [displayName, setDisplayName] = useState<string | null | undefined>();
+  const [photoURL, setPhotoURL] = useState<any>();
+  const [uid, setUid] = useState<string | undefined>();
   
 
 
@@ -39,10 +41,26 @@ export default function Home() {
       return
     }
 
-    await setDoc(doc(db, "users", `${user?.uid}`), {
-      displayName: user?.displayName,
+    
+    setDisplayName(() => {
+      if(user?.displayName === null) {
+        return "Unknown User"
+      }
+      return user?.displayName;
+    });
+    setPhotoURL(() => {
+      if(user?.photoURL === null) {
+        return "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
+      }
+      return user?.photoURL;
+    });
+
+    setUid(user?.uid);
+    await setDoc(doc(db, "users", `${uid}`), {
+      displayName: displayName,
     });
   }
+
 
   const getTodosData = async () => {
     if(user === null) {

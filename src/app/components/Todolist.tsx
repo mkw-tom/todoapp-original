@@ -53,9 +53,9 @@ const Todolist = ({uid, todos, setTodos }: propsTask) => {
   return (
     <ul className='w-full h-auto max-h-96 overflow-auto'>
       {todos.map((todo, index) => (
-        <li key={index} className='w-full h-auto px-3 py-2 flex justify-between items-center bg-gray-100 rounded-md  border-l-4 border-purple-700 mb-5' >
+        <li key={index} className='w-full h-auto px-3 py-2 flex justify-between items-center bg-purple-100 rounded-md  border-l-4 border-purple-700 mb-5' >
           {todo.edit ? (
-            <input type="text" className='display: inline-block w-3/5 h-auto mx-auto break-words text-lg font-bold tracking-widest text-center' value={updateText} onChange={(e) => setUpdateText(e.target.value)} autoFocus={true} />
+            <input type="text" className='inline-block w-3/5 h-auto mx-auto break-words text-lg font-bold tracking-widest text-center' value={updateText} onChange={(e) => setUpdateText(e.target.value)} autoFocus={true} />
           ) : (
             <p className='display: inline-block w-3/5 h-auto mx-auto break-words text-lg font-bold tracking-widest'>
               {todo.text}
