@@ -2,13 +2,13 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   OAuthCredential,
-  OAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
 } from "firebase/auth";
 import { GitHubProvider, GoogleProvider, auth, db } from "./firebase";
+import { FormEvent, MouseEvent } from "react";
 
 //ーーーーーgoogleログインーーーーー
 export const GoogleSignUp = async () => {
@@ -65,10 +65,13 @@ export const GitHubSignUp = async () => {
     });
 };
 
-export const EmailSignUp = async (email: string, password: string) => {
+export const EmailSignUp = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, email: string, password: string) => {
+  e.preventDefault();
+
   await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      return user;
     })
     .catch((error) => {
       const errorCode = error.code;
