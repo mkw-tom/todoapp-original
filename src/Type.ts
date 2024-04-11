@@ -4,6 +4,11 @@ export type Task = {
   edit: boolean;
 }
 
+export type profiles = {
+  displayName: string | null | undefined;
+  photoURL: any;
+}
+
 export type propsTask = {
   uid: string | null | undefined ;
   todos: Task[];

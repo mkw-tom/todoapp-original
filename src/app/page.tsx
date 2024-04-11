@@ -1,7 +1,7 @@
 "use client";
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
-import { Task } from "@/Type";
+import { Task, profiles } from "@/Type";
 import { db, auth } from "./firebase/firebase";
 import {
   collection,
@@ -25,15 +25,42 @@ export default function Home() {
 
   const [displayName, setDisplayName] = useState<string | null | undefined>();
   const [photoURL, setPhotoURL] = useState<any>();
+  const [profs, setUserProfs] = useState<profiles[]>([{
+    displayName: user?.displayName,
+    photoURL: user?.photoURL,
+  }]);
+
   const [uid, setUid] = useState<string | undefined>();
   
 
 
 
   useEffect(() => {
+    if(user === null) {
+      return;
+    }
     setUserData();
     getTodosData();
   }, [user]);
+
+  const setProf = async () => {
+    const userProf = await getDoc(doc(db, "users", `${user?.uid}`, "prof"));
+    if(userProf.data() === undefined) {
+      const profs = {
+        displayName: user?.displayName,
+        photoURL: user?.photoURL,
+      }
+      setUserProfs([profs])
+    } 
+
+
+    //ユーザーのプロフィールをサブコレクションの"prof"の中で管理することにした。
+    const profs: profiles = {
+      displayName: userProf.data()?.displayNmae,
+      photoURL: userProf.data()?.photoURL,
+    }
+    return setUserProfs([profs]);
+  }
 
 
   const setUserData = async () => {
@@ -41,23 +68,24 @@ export default function Home() {
       return
     }
 
-    
-    setDisplayName(() => {
-      if(user?.displayName === null) {
-        return "Unknown User"
-      }
-      return user?.displayName;
-    });
-    setPhotoURL(() => {
-      if(user?.photoURL === null) {
-        return "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
-      }
-      return user?.photoURL;
-    });
+    // setDisplayName(() => {
+    //   if(user?.displayName === null) {
+    //     return "Unknown User"
+    //   }
+    //   return user?.displayName;
+    // });
+    // setPhotoURL(() => {
+    //   if(user?.photoURL === null) {
+    //     return "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
+    //   }
+    //   return user?.photoURL;
+    // });
 
     setUid(user?.uid);
-    await setDoc(doc(db, "users", `${uid}`), {
-      displayName: displayName,
+    await setDoc(doc(db, "users", `${uid}`, "prof"), {
+      displayName: user?.displayName,
+      photoURL: user?.photoURL,
+      uid: user?.uid,
     });
   }
 
@@ -85,6 +113,7 @@ export default function Home() {
     auth.signOut();
     setTodos([]);
   };
+
   return (
     <>
       {user ? (
