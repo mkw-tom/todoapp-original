@@ -12,87 +12,72 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import AppStart from "./components/AppStart";
-
+import { updateProfile } from "firebase/auth";
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
   const [user] = useAuthState(auth);
-  
 
   const [displayName, setDisplayName] = useState<string | null | undefined>();
   const [photoURL, setPhotoURL] = useState<any>();
-  const [profs, setUserProfs] = useState<profiles[]>([{
-    displayName: user?.displayName,
-    photoURL: user?.photoURL,
-  }]);
 
   const [uid, setUid] = useState<string | undefined>();
-  
-
-
 
   useEffect(() => {
-    if(user === null) {
+    if (user === null) {
       return;
     }
     setUserData();
     getTodosData();
   }, [user]);
 
-  const setProf = async () => {
-    const userProf = await getDoc(doc(db, "users", `${user?.uid}`, "prof"));
-    if(userProf.data() === undefined) {
-      const profs = {
-        displayName: user?.displayName,
-        photoURL: user?.photoURL,
-      }
-      setUserProfs([profs])
-    } 
-
-
-    //ユーザーのプロフィールをサブコレクションの"prof"の中で管理することにした。
-    const profs: profiles = {
-      displayName: userProf.data()?.displayNmae,
-      photoURL: userProf.data()?.photoURL,
-    }
-    return setUserProfs([profs]);
-  }
-
+  
+  const updateProf = async (name: string | null | undefined, photo: any) => {
+    await updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    })
+      .then(() => {
+        // Profile updated!
+        // ...
+      })
+      .catch((error) => {
+        // An error occurred
+        // ...
+      });
+  };
 
   const setUserData = async () => {
-    if(user === null) {
-      return
-    }
+    // const profName = await getDoc(doc(db, "users", `${user?.uid}`));
+    // if (profName.exists()){
+    //   setDisplayName(user?.displayName);
+    //   setPhotoURL(user?.photoURL);
+    //   return alert("既存ユーザーです")
+    // }
+    if(user?.displayName === null)  {
+      updateProf("unknownUser", user?.photoURL);
+    } else if (user?.photoURL === null) {
+      updateProf(user?.displayName, "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png")
+    } else if(user?.displayName === null && photoURL === null) {
+      updateProf("unknownUser", "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png")
+    } 
 
-    // setDisplayName(() => {
-    //   if(user?.displayName === null) {
-    //     return "Unknown User"
-    //   }
-    //   return user?.displayName;
-    // });
-    // setPhotoURL(() => {
-    //   if(user?.photoURL === null) {
-    //     return "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
-    //   }
-    //   return user?.photoURL;
-    // });
-
-    setUid(user?.uid);
-    await setDoc(doc(db, "users", `${uid}`, "prof"), {
+    await setDoc(doc(db, "users", `${user?.uid}`), {
       displayName: user?.displayName,
       photoURL: user?.photoURL,
-      uid: user?.uid,
-    });
+    })
+    setDisplayName(user?.displayName);
+    setPhotoURL(user?.photoURL);
   }
-
+  
 
   const getTodosData = async () => {
-    if(user === null) {
-      return
+    if (user === null) {
+      return;
     }
 
     const datas = await getDocs(collection(db, `users`, `${uid}`, "todos"));

@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,9 +17,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const db =  getFirestore(app);
-const auth = getAuth(app);
-const GoogleProvider = new GoogleAuthProvider;
-const GitHubProvider = new GithubAuthProvider;
+const db = getFirestore(app);
+const auth: any = getAuth(app);
+const GoogleProvider = new GoogleAuthProvider();
+const GitHubProvider = new GithubAuthProvider();
 
-export { db, auth, GoogleProvider, GitHubProvider }
+export { db, auth, GoogleProvider, GitHubProvider };
