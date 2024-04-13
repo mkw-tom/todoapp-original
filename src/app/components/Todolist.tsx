@@ -6,6 +6,7 @@ import { db } from "../firebase/firebase";
 
 const Todolist = ({ uid, todos, setTodos }: propsTask) => {
   const [updateText, setUpdateText] = useState<string>("");
+  const [disabled, setDisabled] = useState<boolean>(false);
   
   const ref = useRef<HTMLInputElement>(null!);
 
@@ -14,7 +15,6 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
     if(confirm("このタスクにロックしますか？") === false) {
       return;
     }
-
     const newTodos = todos.map((todo) => {
       if(todo.id === id) {
         todo.locked = true;
@@ -54,16 +54,22 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
     });
   }
 
-  const handleSave = async ( id: number | string, text: string) => {
+
+  const handleSave = async ( id:number | string, text:string, locked:boolean) => {
     if(updateText === "") {
       return alert("文字が入力されていません。");
     }
+    setDisabled(false);
     const newTodos = todos.map((todo) => {
       if (todo.id === id) {
         todo.edit = false;
         todo.text = updateText;
+      } else if (todo.locked === true){
+        todo.disabled = false;
+        todo.bgColor = "yellow";
       } else {
         todo.disabled = false;
+        todo.bgColor = "white";
       }
       return todo;
     });
@@ -76,13 +82,16 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
     setUpdateText("");
   };
 
+
   const handleEdit = async (id: number | string, text: string) => {
     setUpdateText(text);
+    setDisabled(true);
     const newTodos = todos.map((todo) => {
       if (todo.id === id) {
         todo.edit = true;
       } else {
         todo.disabled = true;
+        todo.bgColor = "gray";
       }
       return todo;
     });
@@ -94,7 +103,10 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
     });
   };
 
-  const handleDelete = async (id: number | string) => {
+  const handleDelete = async (id: number | string, locked: boolean) => {
+    if(locked === true) {
+      return confirm("このタスクはロック中のため削除できません。")
+    }
     if(confirm("このタスクを消してもよろしいですか？") === false) {
       return
     }
@@ -112,21 +124,22 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
           className="w-full h-auto px-3 py-2 flex justify-between items-center bg-purple-100 rounded-md  border-l-4 border-purple-700 mb-5"
         >
           {todo.locked === false ? (
-            <div onClick={() => handleLock(todo.id)}>
+            <button onClick={() => handleLock(todo.id)} disabled={disabled}>
               <LockOpen />
-            </div>
+            </button>
           ) :(
-            <div onClick={() => handleOpenLock(todo.id)}>
+            <button onClick={() => handleOpenLock(todo.id)} disabled={disabled}>
               <Lock />
-            </div>
+            </button>
           )}
           {todo.edit ? (
             <input
               type="text"
-              className="inline-block w-3/5 h-auto mx-auto break-words text-lg font-bold tracking-widest text-center border-2 border-purple-700 rounded-md outline-2 outline-purple-700"
+              className="inline-block w-3/5 h-auto mx-auto break-words text-lg font-bold tracking-widest text-center border-2 border-orange-500 rounded-md outline-2 outline-orange-500"
               value={updateText}
               onChange={(e) => setUpdateText(e.target.value)}
               autoFocus={true}
+              onBlur={(e) => e.target.focus()}
               disabled={todo.disabled}
             />
           ) : (
@@ -136,7 +149,7 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
           )}
           <div>
             {todo.edit ? (
-              <button onClick={() => handleSave(todo.id, todo.text)}>
+              <button onClick={() => handleSave(todo.id, todo.text, todo.locked)}>
                 <EditOff className="text-blue-500 hover:opacity-70 mr-3"></EditOff>
               </button>
             ) : (
@@ -145,7 +158,7 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
               </button>
             )}
 
-            <button onClick={() => handleDelete(todo.id)} disabled={todo.disabled}>
+            <button onClick={() => handleDelete(todo.id, todo.locked)} disabled={disabled}>
               <Delete className="text-red-500 hover:opacity-70"></Delete>
             </button>
           </div>

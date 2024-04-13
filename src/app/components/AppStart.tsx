@@ -16,7 +16,7 @@ const AppStart = () => {
   
           </h2>
           <button
-            className="block mx-auto text-white text-xl bg-orange-700 px-8 py-5 rounded-full shadow-md shadow-orange-950 active:shadow-none active:translate-y-1 "
+            className="block mx-auto text-white text-xl bg-orange-700 px-8 py-5 mb-10 rounded-full shadow-md shadow-orange-950 active:shadow-none active:translate-y-1 "
             onClick={() => setStart(true)}
           >
             create my TodoList
