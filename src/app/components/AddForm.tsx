@@ -32,6 +32,9 @@ const AddForm = ({ uid, todos, setTodos }: propsTask) => {
       id: `${docID}`,
       text: text,
       edit: false,
+      locked: false,
+      disabled:false,
+      bgColor: "white",
     }
     setTodos([...todos, newTodo])
 

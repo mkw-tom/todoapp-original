@@ -2,6 +2,9 @@ export type Task = {
   id: number | string;
   text: string;
   edit: boolean;
+  locked: boolean;
+  disabled: boolean;
+  bgColor: string;
 }
 
 export type profiles = {

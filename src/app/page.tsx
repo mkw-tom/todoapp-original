@@ -42,22 +42,21 @@ export default function Home() {
       photoURL: photo,
     })
       .then(() => {
-        // Profile updated!
-        // ...
+        console.log("Profile Updaete");
       })
       .catch((error) => {
-        // An error occurred
-        // ...
+        console.log(`${error.message}`)
       });
   };
 
   const setUserData = async () => {
-    // const profName = await getDoc(doc(db, "users", `${user?.uid}`));
-    // if (profName.exists()){
-    //   setDisplayName(user?.displayName);
-    //   setPhotoURL(user?.photoURL);
-    //   return alert("既存ユーザーです")
-    // }
+    const profName = await getDoc(doc(db, "users", `${user?.uid}`));
+    if (profName.exists()){
+      setDisplayName(user?.displayName);
+      setPhotoURL(user?.photoURL);
+      return;
+    }
+
     if(user?.displayName === null)  {
       updateProf("unknownUser", user?.photoURL);
     } else if (user?.photoURL === null) {
@@ -72,6 +71,7 @@ export default function Home() {
     })
     setDisplayName(user?.displayName);
     setPhotoURL(user?.photoURL);
+    setUid(user?.uid);
   }
   
 
@@ -86,7 +86,10 @@ export default function Home() {
       const todo: Task = {
         id: data.data().id,
         text: data.data().text,
-        edit: false,
+        edit: data.data().edit,
+        locked: data.data().locked,
+        disabled: data.data().disabled,
+        bgColor: data.data().bgColor,
       };
       todoDataList.push(todo);
     });
