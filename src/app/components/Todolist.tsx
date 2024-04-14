@@ -117,6 +117,9 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
 
   return (
     <ul className="w-full h-auto max-h-96 overflow-auto">
+      <p className="text-white text-lg my-3">
+        <span className="mr-3 hover:opacity-70">All</span>/<span className="ml-3 hover:opacity-70">Locked</span>
+      </p>
       {todos.map((todo, index) => (
         <li
           key={index}
@@ -124,11 +127,11 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
           className="w-full h-auto px-3 py-2 flex justify-between items-center bg-purple-100 rounded-md  border-l-4 border-purple-700 mb-5"
         >
           {todo.locked === false ? (
-            <button onClick={() => handleLock(todo.id)} disabled={disabled}>
+            <button className="hover:opacity-70" onClick={() => handleLock(todo.id)} disabled={disabled}>
               <LockOpen />
             </button>
           ) :(
-            <button onClick={() => handleOpenLock(todo.id)} disabled={disabled}>
+            <button className="hover:opacity-70" onClick={() => handleOpenLock(todo.id)} disabled={disabled}>
               <Lock />
             </button>
           )}

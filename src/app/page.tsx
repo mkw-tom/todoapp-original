@@ -54,6 +54,8 @@ export default function Home() {
     if (profName.exists()){
       setDisplayName(user?.displayName);
       setPhotoURL(user?.photoURL);
+      setUid(user?.uid)
+      alert("お帰りなさい");
       return;
     }
 
@@ -61,7 +63,7 @@ export default function Home() {
       updateProf("unknownUser", user?.photoURL);
     } else if (user?.photoURL === null) {
       updateProf(user?.displayName, "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png")
-    } else if(user?.displayName === null && photoURL === null) {
+    } else if(user?.displayName === null && user?.photoURL === null) {
       updateProf("unknownUser", "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png")
     } 
 
@@ -80,7 +82,7 @@ export default function Home() {
       return;
     }
 
-    const datas = await getDocs(collection(db, `users`, `${uid}`, "todos"));
+    const datas = await getDocs(collection(db, `users`, `${user?.uid}`, "todos"));
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
       const todo: Task = {
