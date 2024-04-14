@@ -17,6 +17,8 @@ import { Button } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AppStart from "./components/AppStart";
 import { updateProfile } from "firebase/auth";
+import { ArrowRight, Settings } from "@mui/icons-material";
+import Link from "next/link";
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
@@ -31,11 +33,11 @@ export default function Home() {
     if (user === null) {
       return;
     }
+
     setUserData();
     getTodosData();
   }, [user]);
 
-  
   const updateProf = async (name: string | null | undefined, photo: any) => {
     await updateProfile(auth.currentUser, {
       displayName: name,
@@ -45,44 +47,50 @@ export default function Home() {
         console.log("Profile Updaete");
       })
       .catch((error) => {
-        console.log(`${error.message}`)
+        console.log(`${error.message}`);
       });
   };
 
   const setUserData = async () => {
     const profName = await getDoc(doc(db, "users", `${user?.uid}`));
-    if (profName.exists()){
+    if (profName.exists()) {
       setDisplayName(user?.displayName);
       setPhotoURL(user?.photoURL);
-      setUid(user?.uid)
-      alert("お帰りなさい");
+      setUid(user?.uid);
       return;
     }
 
-    if(user?.displayName === null)  {
+    if (user?.displayName === null) {
       updateProf("unknownUser", user?.photoURL);
     } else if (user?.photoURL === null) {
-      updateProf(user?.displayName, "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png")
-    } else if(user?.displayName === null && user?.photoURL === null) {
-      updateProf("unknownUser", "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png")
-    } 
+      updateProf(
+        user?.displayName,
+        "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png"
+      );
+    } else if (user?.displayName === null && user?.photoURL === null) {
+      updateProf(
+        "unknownUser",
+        "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png"
+      );
+    }
 
     await setDoc(doc(db, "users", `${user?.uid}`), {
       displayName: user?.displayName,
       photoURL: user?.photoURL,
-    })
+    });
     setDisplayName(user?.displayName);
     setPhotoURL(user?.photoURL);
     setUid(user?.uid);
-  }
-  
+  };
 
   const getTodosData = async () => {
     if (user === null) {
       return;
     }
 
-    const datas = await getDocs(collection(db, `users`, `${user?.uid}`, "todos"));
+    const datas = await getDocs(
+      collection(db, `users`, `${user?.uid}`, "todos")
+    );
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
       const todo: Task = {
@@ -121,6 +129,10 @@ export default function Home() {
               className="inline-block w-12 h-12 rounded-full z-0 border-2 border-white"
             />
             <div className="flex-col items-center justify-center hidden group-hover:block z-10 bg-purple-100 w-80 h-72 absolute top-5 right-5 duration-700 rounded-md shadow-lg border-2 border-purple-600">
+                <Link href="./settingPage" className="flex items-center absolute top-3 right-5 text-gray-500 hover:text-purple-500">
+                  <small>setting</small>
+                  <ArrowRight></ArrowRight>
+                </Link>
               <img
                 src={photoURL}
                 alt=""
@@ -142,9 +154,6 @@ export default function Home() {
               with Next.js/firebase
             </span>
           </h1>
-          {/* <Link href="./" className="text-white flex-col mx-5 hover:opacity-70">
-            <HomeIcon className="text-4xl"></HomeIcon>
-          </Link> */}
         </header>
       )}
       {user ? (

@@ -117,9 +117,6 @@ const Todolist = ({ uid, todos, setTodos }: propsTask) => {
 
   return (
     <ul className="w-full h-auto max-h-96 overflow-auto">
-      <p className="text-white text-lg my-3">
-        <span className="mr-3 hover:opacity-70">All</span>/<span className="ml-3 hover:opacity-70">Locked</span>
-      </p>
       {todos.map((todo, index) => (
         <li
           key={index}

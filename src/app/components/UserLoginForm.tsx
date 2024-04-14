@@ -1,6 +1,6 @@
 import Login from "./Login";
 import { start } from "@/Type";
-import { Cancel　} from "@mui/icons-material";
+import { Cancel } from "@mui/icons-material";
 
 const UserLoginForm = ({ setStart }: start) => {
   return (
