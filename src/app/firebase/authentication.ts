@@ -67,7 +67,7 @@ export const GitHubSignUp = async () => {
 
 export const EmailSignUp = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, email: string, password: string) => {
   e.preventDefault();
-  createUserWithEmailAndPassword(auth, email, password)
+  await createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
