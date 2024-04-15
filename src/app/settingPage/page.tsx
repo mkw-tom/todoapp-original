@@ -6,7 +6,7 @@ import { ArrowRight } from "@mui/icons-material";
 import { doc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 
-const settingPage = () => {
+const Page = () => {
   const userName: string | null | undefined = auth.currentUser?.displayName;
   const [name, setName] = useState<string | null | undefined>(userName);
   const userPhoto: any = auth.currentUser?.photoURL
@@ -137,4 +137,4 @@ const settingPage = () => {
   );
 };
 
-export default settingPage;
+export default Page;
