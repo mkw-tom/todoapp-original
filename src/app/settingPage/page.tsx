@@ -1,20 +1,18 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "../firebase/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { ArrowRight, Opacity } from "@mui/icons-material";
-import { collection, doc, updateDoc } from "firebase/firestore";
+import { ArrowRight } from "@mui/icons-material";
+import { doc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 
 const page = () => {
-  const [user] = useAuthState(auth);
   const [displayName, setDisplayName] = useState<string | null | undefined>(
-    user?.displayName
+    auth.currentUser.displayName
   );
-  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL);
-  const [nameButtonStyle, setNameButtonStyle] = useState<string>("1");
-  const [photoButtonStyle, setPhotoButtonStyle] = useState<string>("1");
+  const [photoURL, setPhotoURL] = useState<any>(auth.currentUser.photoURL);
+  const [nameButtonStyle] = useState<string>("1");
+  const [photoButtonStyle] = useState<string>("1");
   
   
 
@@ -30,7 +28,7 @@ const page = () => {
     }
 
     if (confirm("ユーザーネームをを変更しますか？") === false) {
-      setDisplayName(user?.displayName)
+      setDisplayName(auth.currentUser.displayName)
       return;
     }
     await updateProfile(auth.currentUser, {
@@ -40,18 +38,18 @@ const page = () => {
       // ...
     });
 
-    await updateDoc(doc(db, 'users', `${user?.uid}`), {
+    await updateDoc(doc(db, 'users', `${auth.currentUser.uid}`), {
       displayName: displayName,
     })
     alert("ユーザーネームを変更しました！");
   };
 
   const updatePhoto = async () => {
-    if(photoURL === user?.photoURL) {
+    if(photoURL === auth.currentUser.photoURL) {
       return alert("画像が選択されていません。")
     }
     if (confirm("プロフィール画像を変更しますか？") === false) {
-      setPhotoURL(user?.photoURL);
+      setPhotoURL(auth.currentUser.photoURL);
       return;
     }
     await updateProfile(auth.currentUser, {
@@ -60,7 +58,7 @@ const page = () => {
       // An error occurred
       // ...
     });
-    await updateDoc(doc(db, 'users', `${user?.uid}`), {
+    await updateDoc(doc(db, 'users', `${auth.currentUser.uid}`), {
       photoURL: photoURL,
     })
 
