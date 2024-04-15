@@ -7,10 +7,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 
 const page = () => {
-  const [displayName, setDisplayName] = useState<string | null | undefined>(
+  const [name, setName] = useState<string | null | undefined>(
     auth.currentUser.displayName
   );
-  const [photoURL, setPhotoURL] = useState<any>(auth.currentUser.photoURL);
+  const [photo, setPhoto] = useState<any>(auth.currentUser.photoURL);
   const [nameButtonStyle] = useState<string>("1");
   const [photoButtonStyle] = useState<string>("1");
   
@@ -19,47 +19,47 @@ const page = () => {
   const getURL = (e: any | React.ChangeEvent<HTMLInputElement>) => {
     const file: any = e.target.files[0];
     const imageURL: any = URL.createObjectURL(file);
-    setPhotoURL(imageURL);
+    setPhoto(imageURL);
   }
 
   const updateName = async () => {
-    if(displayName === "" ) {
+    if(name === "" ) {
       return alert("文字が入力されていません。")
     }
 
     if (confirm("ユーザーネームをを変更しますか？") === false) {
-      setDisplayName(auth.currentUser.displayName)
+      setName(auth.currentUser.displayName)
       return;
     }
     await updateProfile(auth.currentUser, {
-      displayName: displayName,
+      displayName: name,
     }).catch((error) => {
       // An error occurred
       // ...
     });
 
     await updateDoc(doc(db, 'users', `${auth.currentUser.uid}`), {
-      displayName: displayName,
+      displayName: name,
     })
     alert("ユーザーネームを変更しました！");
   };
 
   const updatePhoto = async () => {
-    if(photoURL === auth.currentUser.photoURL) {
+    if(photo === auth.currentUser.photoURL) {
       return alert("画像が選択されていません。")
     }
     if (confirm("プロフィール画像を変更しますか？") === false) {
-      setPhotoURL(auth.currentUser.photoURL);
+      setPhoto(auth.currentUser.photoURL);
       return;
     }
     await updateProfile(auth.currentUser, {
-      photoURL: photoURL,
+      photoURL: photo,
     }).catch((error) => {
       // An error occurred
       // ...
     });
     await updateDoc(doc(db, 'users', `${auth.currentUser.uid}`), {
-      photoURL: photoURL,
+      photoURL: photo,
     })
 
     alert("プロフィール画像を変更しました！")
@@ -89,7 +89,7 @@ const page = () => {
           </h1>
           <p className=" text-white mt-12 mb-3 text-left">・プロフィール画像を変更</p>
             <img
-              src={photoURL}
+              src={photo}
               alt="プロフィール画像"
               className="block w-20 h-20 rounded-full my-5 mx-auto border-2 border-white"
             />
@@ -120,8 +120,8 @@ const page = () => {
               type="text"
               maxLength={9}
               className="inline-block h-10 rounded-l-md text-center bg-purple-200 flex-1"
-              value={`${displayName}`}
-              onChange={(e) => setDisplayName(e.target.value)}
+              value={`${name}`}
+              onChange={(e) => setName(e.target.value)}
             />
             <button
               style={{opacity: `${nameButtonStyle}`}}
