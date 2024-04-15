@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase/firebase";
 import { ArrowRight } from "@mui/icons-material";
 import { doc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 
 const page = () => {
-  const [name, setName] = useState<string | null | undefined>(
-    auth.currentUser.displayName
-  );
-  const [photo, setPhoto] = useState<any>(auth.currentUser.photoURL);
-  const [nameButtonStyle] = useState<string>("1");
-  const [photoButtonStyle] = useState<string>("1");
+  const userName: string | null | undefined = auth.currentUser?.displayName;
+  const [name, setName] = useState<string | null | undefined>(userName);
+  const userPhoto: any = auth.currentUser?.photoURL
+  const [photo, setPhoto] = useState<any>(userPhoto);
+  
+
   
   
 
@@ -24,12 +24,14 @@ const page = () => {
 
   const updateName = async () => {
     if(name === "" ) {
-      return alert("文字が入力されていません。")
+      alert("文字が入力されていません。")
+      setName(auth.currentUser.displayName)
+      return
     }
 
     if (confirm("ユーザーネームをを変更しますか？") === false) {
       setName(auth.currentUser.displayName)
-      return;
+      return
     }
     await updateProfile(auth.currentUser, {
       displayName: name,
@@ -106,7 +108,6 @@ const page = () => {
                 画像を選択
               </button>
               <button
-                style={{opacity: `${photoButtonStyle}`}}
                 className="inline-block w-2/12 h-10 bg-purple-800 text-white rounded-r-md"
                 onClick={updatePhoto}
               >
@@ -124,7 +125,6 @@ const page = () => {
               onChange={(e) => setName(e.target.value)}
             />
             <button
-              style={{opacity: `${nameButtonStyle}`}}
               className="inline-block w-2/12 h-10 bg-purple-800 text-white rounded-r-md hover:opacity-70"
               onClick={updateName}
             >
