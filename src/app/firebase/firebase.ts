@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -22,4 +23,6 @@ const auth: any = getAuth(app);
 const GoogleProvider = new GoogleAuthProvider();
 const GitHubProvider = new GithubAuthProvider();
 
-export { db, auth, GoogleProvider, GitHubProvider };
+const storage = getStorage();
+
+export { db, auth, GoogleProvider, GitHubProvider, storage };
