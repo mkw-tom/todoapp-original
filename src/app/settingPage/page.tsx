@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase/firebase";
 import { ArrowRight } from "@mui/icons-material";
 import {
@@ -15,14 +15,13 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { urlToHttpOptions } from "url";
 
 const Page = () => {
   const [user] = useAuthState(auth);
   const [name, setName] = useState<string | null | undefined>(
     user?.displayName
   );
-  const [photo, setPhoto] = useState<any>(user?.photoURL);
+  const [photo, setPhoto] = useState<any>(user?.photoURL);  
 
 
 
@@ -128,7 +127,7 @@ const Page = () => {
               className="w-10/12 opacity-0 cursor-pointer "
             />
             <button className="inline-block w-full h-10 z-10 absolute top-0 rounded-md bg-purple-800 text-white pointer-events-none">
-              画像を選択
+              画像を選択する。
             </button>
           </div>
           <hr />
@@ -142,7 +141,6 @@ const Page = () => {
               className="inline-block h-10 rounded-l-md text-center bg-purple-200 flex-1"
               value={`${name}`}
               onChange={(e) => {
-                //
                 setName(e.target.value);
               }}
             />

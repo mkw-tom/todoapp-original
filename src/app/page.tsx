@@ -1,7 +1,7 @@
 "use client";
 import AddForm from "./components/AddForm";
 import Todolist from "./components/Todolist";
-import { Task, profiles } from "@/Type";
+import { Task } from "@/Type";
 import { db, auth } from "./firebase/firebase";
 import {
   collection,
@@ -13,11 +13,10 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
-import { Button } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
+import { Button } from "@mui/material";;
 import AppStart from "./components/AppStart";
 import { updateProfile } from "firebase/auth";
-import { ArrowRight, Lock, Settings } from "@mui/icons-material";
+import { ArrowRight,} from "@mui/icons-material";
 import Link from "next/link";
 
 export default function Home() {
@@ -110,6 +109,7 @@ export default function Home() {
     setTodos(todoDataList);
   };
 
+
   const handleSignOut = () => {
     auth.signOut();
     setTodos([]);
@@ -179,3 +179,4 @@ export default function Home() {
     </>
   );
 }
+
