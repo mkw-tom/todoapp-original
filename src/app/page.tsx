@@ -132,7 +132,7 @@ export default function Home() {
             <img
               src={photoURL}
               alt="image"
-              className="inline-block w-12 h-12 rounded-full z-0 border-2 border-white"
+              className="inline-block w-12 h-12 rounded-full z-0 border-2 border-white object-cover"
             />
             <div className="flex-col items-center justify-center hidden group-hover:block z-10 bg-purple-100 w-80 h-72 absolute top-5 right-5 duration-700 rounded-md shadow-lg border-2 border-purple-600">
               <Link
@@ -145,7 +145,7 @@ export default function Home() {
               <img
                 src={photoURL}
                 alt=""
-                className="inline-block w-16 h-16 rounded-full mt-10"
+                className="inline-block w-16 h-16 rounded-full mt-10 object-cover"
               />
               <p className="mt-3 ">{displayName}</p>
               <p className="mt-6 ">合計タスク数：{todos.length}</p>
