@@ -11,13 +11,14 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import { Button } from "@mui/material";;
 import AppStart from "./components/AppStart";
 import { updateProfile } from "firebase/auth";
 import { ArrowRight,} from "@mui/icons-material";
 import Link from "next/link";
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 
 export default function Home() {
   const [todos, setTodos] = useState<Task[]>([]);
@@ -29,9 +30,10 @@ export default function Home() {
   const [uid, setUid] = useState<string | undefined >();
   const lockedTodos = todos.filter((todo) => todo.locked === true);
 
+
   useEffect(() => {
     if (user === null) {
-      return;
+      return
     }
     setUserData();
     getTodosData();
@@ -39,6 +41,10 @@ export default function Home() {
 
 
   const updateProf = async (name: string | null | undefined, photo: any) => {
+    if (user === null) {
+      return
+    }
+
     await updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photo,
@@ -60,6 +66,10 @@ export default function Home() {
   };
 
   const setUserData = async () => {
+    if (user === null) {
+      return
+    }
+
     const profName = await getDoc(doc(db, "users", `${user?.uid}`));
     if (profName.exists()) {
       setDisplayName(user?.displayName);
@@ -88,11 +98,14 @@ export default function Home() {
       alert("はじめまして！");
     }
   };
-
+  
   const getTodosData = async () => {
-    const datas = await getDocs(
-      collection(db, `users`, `${user?.uid}`, "todos")
-    );
+    if (user === null) {
+      return
+    }
+    
+    const datas = await getDocs(collection(db, "users", `${user?.uid}`, "todos"))
+    
     const todoDataList: Task[] = [];
     datas.forEach((data) => {
       const todo: Task = {
@@ -107,9 +120,9 @@ export default function Home() {
     });
     // console.log(todoDataList);
     setTodos(todoDataList);
-  };
-
-
+    };
+      
+      
   const handleSignOut = () => {
     auth.signOut();
     setTodos([]);
@@ -179,4 +192,6 @@ export default function Home() {
     </>
   );
 }
+
+
 

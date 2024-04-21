@@ -1,4 +1,5 @@
 export type Task = {
+  [x: string]: any;
   id: number | string;
   text: string;
   edit: boolean;

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase/firebase";
 import { ArrowRight } from "@mui/icons-material";
@@ -15,6 +14,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Link from "next/link";
 
 const Page = () => {
   const [user] = useAuthState(auth);
@@ -30,7 +30,7 @@ const Page = () => {
       photoURL: url
     })
       .then(() => {
-        alert("Profile Updaete");
+        console.log("Profile Updaete");
       })
       .catch((error) => {
         alert(`${error.message}`);
@@ -57,7 +57,6 @@ const Page = () => {
     const gsReference = ref(storage, `images/${user?.uid}/${file.name}`);
     await getDownloadURL(gsReference)
       .then((url) => {
-        alert(`URLが取得できました${url}`);
         setPhoto(url);
         updateURL(url, file.name);
       })
@@ -137,11 +136,16 @@ const Page = () => {
           <div className="flex items-center w-full h-10 mb-5">
             <input
               type="text"
-              maxLength={9}
+              maxLength={12}
               className="inline-block h-10 rounded-l-md text-center bg-purple-200 flex-1"
               value={`${name}`}
               onChange={(e) => {
-                setName(e.target.value);
+                const inputValue = e.target.value;
+                const valueLength = inputValue.length;
+                setName(inputValue);
+                if(valueLength === 12) {
+                  return alert("12文字以内にしてください。")
+                }
               }}
             />
             <button
